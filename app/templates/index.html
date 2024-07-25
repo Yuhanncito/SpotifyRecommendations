@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20211045</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                clifford: '#da373d',
+              }
+            }
+          }
+        }
+      </script>
+      <style type="text/tailwindcss">
+        @layer utilities {
+          .content-auto {
+            content-visibility: auto;
+          }
+        }
+      </style>
+</head>
+<body>
+    <div class="w-screen h-screen flex flex-col">
+        <div class="w-full h-20 bg-gray-600 flex flex-row">
+            <div class=" w-4/5 h-full p-2 flex flex-row items-center justify-center">
+                <h1 class="text-3xl font-bold text-white">{{ alumn.name }} - {{ alumn.matricula }}</h1>
+            </div>
+            <div class="  w-1/5 h-full p-2 flex flex-row items-center justify-center">
+                <h1 class="text-3xl font-bold text-white">{{ alumn.cuatrimestre }} - "{{ alumn.grupo }}"</h1>
+            </div>
+        </div>
+        
+        <div class="w-full h-full p-2 flex flex-row items-center justify-evenly ">
+            <div class=" w-3/6 h-full p-2 flex flex-col items-center  shadow-2xl border-2">
+                <h1 class=" mt-10 text-3xl font-bold">Formulario de Registro</h1>
+                
+                <form action="/" method="POST" class=" w-4/6 h-[60%] mt-10 p-2 flex flex-col items-center justify-center shadow-2xl border-2">
+                    <h1 class="text-3xl font-bold" >Ingresa tus datos</h1>
+                    <div class=" w-4/5 h-10 p-2 mt-5 flex flex-col">
+                        <label class="text-xl font-bold" for="name">Nombre</label>
+                        <input class=" p-2 border-2 rounded w-full mt-1 content-auto    " type="text" name="name" id="name" placeholder="Nombre">
+                    </div>
+
+                    <div class=" w-4/5 h-10 p-2 mt-10 flex flex-col">
+                        <label class="text-xl font-bold" for="name">Matricula</label>
+                        <input class=" p-2 border-2 rounded w-full mt-1 content-auto    " type="number" name="matricula" id="matricula" placeholder="matricula">
+                    </div>
+                    
+                    <div class=" w-4/5 h-10 p-2 mt-10 flex flex-col">
+                        <input type="submit" value="Registrar" class=" bg-blue-600 hover:bg-blue-700 cursor-pointer text-white font-bold p-2 rounded w-full mt-10">
+                    </div>
+                    
+                </form>
+            </div>
+            <div class=" w-2/6 h-full p-2 flex flex-col items-center shadow-2xl border-2">
+                <h1 class="text-3xl font-bold mt-10">Personas</h1>
+                {% for persona in data %}
+                    <div class=" w-4/5 h-22 p-2 mt-8 flex flex-col shadow-xl border-2 transition-all hover:scale-105">
+                        <h1 class="text-xl font-bold">Nombre: {{ persona.name }}</h1>
+                        <h1 class="text-xl font-bold">Matricula: {{ persona.matricula }}</h1>
+                    </div>
+
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Titanic Survived</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                clifford: '#da373d',
+              }
+            }
+          }
+        }
+      </script>
+    <script>
+        function clasificarInsecto(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const year = document.getElementById('year').value;
+
+            fetch('/predict_model', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, year })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.log(data.error);
+                } else {
+                    const recommendations = document.getElementById('recommendations');
+                    var song_list = ``;
+
+                    for( i = 0; i < data.song_list.length; i++){
+
+                        song_list += `<div class="flex items-center justify-between bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
+            <div class="flex items-center space-x-4">
+              
+              <div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">${data.song_list[i].name}</h3>
+                <p class="text-gray-600 dark:text-gray-400">${data.song_list[i].artists}, ${data.song_list[i].year}</p>
+              </div>
+            </div>
+           
+          </div>`
+
+                    }
+
+                    
+
+                    recommendations.innerHTML = song_list;
+                    console.log(data.song_list);     
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <!--
+// v0 by Vercel.
+// https://v0.dev/t/uee0qJlT0Cd
+-->
+
+<div class=" w-screen max-h-screen flex flex-col items-center justify-center h-screen bg-gradient-to-br from-[#1DB954] to-[#191414]">
+    <div class="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-8 w-full max-w-md">
+      <h1 class="text-3xl font-bold mb-4 text-center text-gray-900 dark:text-white">Recomendaciones de Musicas</h1>
+      <form class="space-y-4" onsubmit="clasificarInsecto(event)">
+        <div>
+          <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            Nombre de la Canción
+          </label>
+          <input
+            class="h-10 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#1DB954] focus:border-[#1DB954] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#1DB954] dark:focus:border-[#1DB954]"
+            id="name"
+            name="name"
+            placeholder="Ingresa el nombre de la canción"
+            type="text"
+          />
+        </div>
+        <div>
+          <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            Año de publicación
+          </label>
+          <input
+            class="h-10 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#1DB954] focus:border-[#1DB954] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#1DB954] dark:focus:border-[#1DB954]"
+            type="number"
+            id="year"
+            name="year"
+            placeholder="Ingresa el año"
+          />
+        </div>
+        <button
+          class="inline-flex items-center justify-center whitespace-nowrap text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-full bg-[#1DB954] hover:bg-[#1ed760] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="submit"
+        >
+          Recomendar canciones
+        </button>
+      </form>
+      <div class="mt-8 w-full ">
+        <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Canciones recomendadas</h2>
+        <div class="space-y-4 max-h-80 flex flex-col overflow-x-hidden" id="recommendations">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
